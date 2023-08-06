@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+.wrapper {
+    margin: 20px;
+    h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .screen {
+        width: 300px;
+        // height: 400px;
+        border: 1px solid #ccc;
+        overflow: auto;
+        padding: 0 10px;
+        position: relative;
+
+        .row-item{
+            // height: 40px;
+            border: 1px solid red;
+        }
+    }
+}
+
+
