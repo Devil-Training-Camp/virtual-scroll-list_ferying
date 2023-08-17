@@ -13,8 +13,8 @@ function VirtualList() {
   const [totalHeight, setTotalHeight] = useState<number>(0); // 所有元素的实际高度，用于滚动条计算
   const [offset, setOffset] = useState<number>(0); // 滚动条滚动的距离
 
-  function getList() {
-    const res: any[] = getDataList();
+  async function getList() {
+    const res: any[] = await getDataList();
     const height = res.length * itemHeight; // 所有元素的实际高度，用于滚动条计算
     setTotalHeight(height);
     setCurList(res.slice(0, screenCount + 1));
