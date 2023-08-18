@@ -6,7 +6,11 @@ export function getDataList(): Promise<any[]>{
                 return {
                     index: item,
                     id: item + 1,
-                    name: `列表_${item}`
+                    name: `列表_${item}`,
+                    // content: ['测试iii']
+                    content: Array.from({ length: Math.ceil(Math.random() * 10) }, (x, i) => {
+                        return `这里是测试内容_${i}`
+                    })
                 }
             });
             resolve(data);
