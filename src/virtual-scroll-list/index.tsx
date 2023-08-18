@@ -1,5 +1,6 @@
-import React, {
-  useState,useLayoutEffect,
+import {
+  useState,
+  useLayoutEffect,
   useEffect,
   useCallback,
   useMemo,
@@ -8,7 +9,7 @@ import React, {
 } from "react";
 
 interface virtualProps {
-  wrapperStyle: object,
+  wrapperStyle: object;
   estimatedItemHeight: number; // 每个元素的高度
   dataList: any[]; // 所有数据
   children: (record: object) => ReactNode;
@@ -27,7 +28,7 @@ function VirtualList(props: virtualProps) {
   const [positionCache, setPositionCache] = useState<any[]>([]); // 缓存数据信息
 
   useLayoutEffect(() => {
-    const height = wrapperRef.current?.clientHeight || 0;
+    const height = wrapperRef.current?.clientHeight || 0; // 获取可视区content高度
     setScreenHeight(height);
   }, []);
 
@@ -66,19 +67,19 @@ function VirtualList(props: virtualProps) {
 
   // 获取当前可视区上需要渲染数据的结束索引
   const getEndIndex = useCallback(() => {
-      let end = 0;
-      let total = 0;
-      for (let i = 0; i < positionCache.length; i++) {
-        total  += positionCache[i].height;
-        if(total >= scrollTop + screenHeight) {
-          end = Math.min(i + bufferItemCount, positionCache.length);
-          break;
-        }
+    let end = 0;
+    let total = 0;
+    for (let i = 0; i < positionCache.length; i++) {
+      total += positionCache[i].height;
+      if (total >= scrollTop + screenHeight) {
+        end = Math.min(i + bufferItemCount, positionCache.length);
+        break;
       }
-      return end;
-    },[positionCache, screenHeight, scrollTop]);
+    }
+    return end;
+  }, [positionCache, screenHeight, scrollTop]);
 
-    // 获取当前可视区上需要渲染的数据
+  // 获取当前可视区上需要渲染的数据
   const getVisibleList = useCallback(() => {
     const start = getStartIndex();
     const end = getEndIndex();
@@ -89,7 +90,7 @@ function VirtualList(props: virtualProps) {
       if (index < start) {
         return total + item.height;
       }
-      return total
+      return total;
     }, 0);
     // console.log('offset->', offset, 'start->', start, 'end->', end)
     setOffset(offset);
@@ -97,7 +98,6 @@ function VirtualList(props: virtualProps) {
   useEffect(() => {
     getVisibleList();
   }, [getVisibleList]);
-
 
   useEffect(() => {
     const wrapperRef = virtualBodyRef.current;
@@ -111,7 +111,7 @@ function VirtualList(props: virtualProps) {
         // 如果当前元素的高度发生变化，则更新缓存
         if (positList[curIndex].height !== offsetHeight) {
           needUpdateCache = true;
-          positList[curIndex].height = offsetHeight;// 更新当前元素的实际高度
+          positList[curIndex].height = offsetHeight; // 更新当前元素的实际高度
         }
       }
       if (needUpdateCache) {
@@ -122,7 +122,8 @@ function VirtualList(props: virtualProps) {
 
   function onScroll(e: any) {
     const { scrollTop } = e.target;
-    if(scrollTop + screenHeight <= totalHeight) { // 防止滚动条滚动超出最大高度时，页面不停闪动
+    if (scrollTop + screenHeight <= totalHeight) {
+      // 防止滚动条滚动超出最大高度时，页面不停闪动
       setScrollTop(scrollTop);
     }
   }

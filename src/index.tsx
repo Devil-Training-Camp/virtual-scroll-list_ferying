@@ -20,7 +20,7 @@ function DemoPage() {
       <h1>虚拟滚动列表</h1>
       <h2 style={{ marginTop: 20 }}>列表元素高度不固定的虚拟列表</h2>
       <VirtualList
-        wrapperStyle={{width: '300px', height: '400px'}}
+        wrapperStyle={{ width: "300px", height: "400px" }}
         estimatedItemHeight={40}
         dataList={dataList}
       >
@@ -28,7 +28,7 @@ function DemoPage() {
           <div className="row-item">
             index_{record.index}
             {record.content.map((item, i) => (
-                <div key={i}>{item}</div>
+              <div key={i}>{item}</div>
             ))}
           </div>
         )}
