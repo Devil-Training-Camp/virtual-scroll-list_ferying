@@ -1,5 +1,5 @@
 import React, {
-  useState,
+  useState,useLayoutEffect,
   useEffect,
   useCallback,
   useMemo,
@@ -8,8 +8,7 @@ import React, {
 } from "react";
 
 interface virtualProps {
-  screenWidth: number; // 可视区宽度
-  screenHeight: number; // 可视区高度
+  wrapperStyle: object,
   estimatedItemHeight: number; // 每个元素的高度
   dataList: any[]; // 所有数据
   children: (record: object) => ReactNode;
@@ -17,13 +16,20 @@ interface virtualProps {
 const bufferItemCount = 1; // 缓冲加载列表项个数
 
 function VirtualList(props: virtualProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const virtualBodyRef = useRef<HTMLDivElement>(null);
-  const { screenWidth, screenHeight, estimatedItemHeight, dataList, children } = props;
+  const { wrapperStyle, estimatedItemHeight, dataList, children } = props;
 
+  const [screenHeight, setScreenHeight] = useState<number>(0);
   const [visibleList, setVisibleList] = useState<any[]>([]); // 当前可视区上需要渲染的数据
   const [scrollTop, setScrollTop] = useState<number>(0); // 滚动条滚动的距离
   const [offset, setOffset] = useState<number>(0); // 虚拟列表区域应移动的距离
   const [positionCache, setPositionCache] = useState<any[]>([]); // 缓存数据信息
+
+  useLayoutEffect(() => {
+    const height = wrapperRef.current?.clientHeight || 0;
+    setScreenHeight(height);
+  }, []);
 
   // 所有元素的实际高度，用于滚动条计算
   const totalHeight = useMemo(() => {
@@ -85,7 +91,7 @@ function VirtualList(props: virtualProps) {
       }
       return total
     }, 0);
-    console.log('offset->', offset, 'start->', start, 'end->', end)
+    // console.log('offset->', offset, 'start->', start, 'end->', end)
     setOffset(offset);
   }, [positionCache, screenHeight, estimatedItemHeight, scrollTop]);
   useEffect(() => {
@@ -116,15 +122,17 @@ function VirtualList(props: virtualProps) {
 
   function onScroll(e: any) {
     const { scrollTop } = e.target;
-    console.log('scrollTop->', scrollTop)
-    setScrollTop(scrollTop);
+    if(scrollTop + screenHeight <= totalHeight) { // 防止滚动条滚动超出最大高度时，页面不停闪动
+      setScrollTop(scrollTop);
+    }
   }
 
   return (
     <div
       className="screen"
+      ref={wrapperRef}
       onScroll={onScroll}
-      style={{ height: `${screenHeight}px`, width: `${screenWidth}px` }}
+      style={wrapperStyle}
     >
       <div className="inner-box" style={{ height: `${totalHeight}px` }}>
         <div
