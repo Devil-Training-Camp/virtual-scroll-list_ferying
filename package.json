@@ -1,19 +1,22 @@
 {
   "name": "virtual-scroll-list_ferying",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "虚拟滚动列表",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config conf/webpack.config.js",
-    "start": "webpack serve --config conf/webpack.config.js --open"
+    "build": "webpack --config conf/webpack.prod.config.js",
+    "start": "webpack serve --config conf/webpack.dev.config.js --open"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Devil-Training-Camp/virtual-scroll-list_ferying.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "ferying",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Devil-Training-Camp/virtual-scroll-list_ferying/issues"
@@ -34,7 +37,8 @@
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
   },
   "dependencies": {
     "@babel/preset-react": "^7.22.5",

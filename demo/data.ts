@@ -1,8 +1,7 @@
-
 export function getDataList(): Promise<any[]>{
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const data = Array.from({length: 100}, (x, i) => i).map(item => {
+            const data = Array.from({length: 10000}, (x, i) => i).map(item => {
                 return {
                     index: item,
                     id: item + 1,
