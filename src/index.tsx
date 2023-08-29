@@ -1,12 +1,4 @@
-import {
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useCallback,
-  useMemo,
-  ReactNode,
-  useRef,
-} from "react";
+import { useState, useLayoutEffect, useEffect, useCallback, useMemo, ReactNode, useRef } from 'react';
 
 interface virtualProps {
   wrapperStyle: object;
@@ -105,9 +97,9 @@ function VirtualList(props: virtualProps) {
       const nodes = wrapperRef.children;
       const positList: any[] = [...positionCache];
       let needUpdateCache = false; // 是否需要更新缓存
-      for (let item of nodes) {
+      for (const item of nodes) {
         const { offsetHeight, id } = item as HTMLElement;
-        const curIndex: number = Number(id.split("-")[1]); // 获取当前元素的索引
+        const curIndex: number = Number(id.split('-')[1]); // 获取当前元素的索引
         // 如果当前元素的高度发生变化，则更新缓存
         if (positList[curIndex].height !== offsetHeight) {
           needUpdateCache = true;
@@ -129,20 +121,11 @@ function VirtualList(props: virtualProps) {
   }
 
   return (
-    <div
-      className="screen"
-      ref={wrapperRef}
-      onScroll={onScroll}
-      style={wrapperStyle}
-    >
-      <div className="inner-box" style={{ height: `${totalHeight}px` }}>
-        <div
-          className="virtulal-box"
-          ref={virtualBodyRef}
-          style={{ transform: `translateY(${offset}px)` }}
-        >
+    <div className='screen' ref={wrapperRef} onScroll={onScroll} style={wrapperStyle}>
+      <div className='inner-box' style={{ height: `${totalHeight}px` }}>
+        <div className='virtulal-box' ref={virtualBodyRef} style={{ transform: `translateY(${offset}px)` }}>
           {visibleList.map((item: any) => (
-            <div key={item.index} id={"row-" + item.index}>
+            <div key={item.index} id={'row-' + item.index}>
               {children(item)}
             </div>
           ))}
