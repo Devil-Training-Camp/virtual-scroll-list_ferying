@@ -10,7 +10,8 @@
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config conf/webpack.prod.config.js",
-    "start": "webpack serve --config conf/webpack.dev.config.js --open"
+    "start": "webpack serve --config conf/webpack.dev.config.js --open",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "@babel/preset-env": "^7.22.9",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@release-it/conventional-changelog": "^7.0.0",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
@@ -41,6 +43,7 @@
     "lint-staged": "^14.0.1",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^3.0.2",
+    "release-it": "^16.1.5",
     "sass": "^1.64.2",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
