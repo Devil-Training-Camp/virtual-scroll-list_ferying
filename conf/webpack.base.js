@@ -1,4 +1,3 @@
-const HTMLWebPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -35,9 +34,6 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".jsx"], //配置可以省略的文件后缀名
   },
   plugins: [
-    new HTMLWebPlugin({
-      template: "./public/index.html",
-    }),
     new MiniCssExtractPlugin({ //提取css文件
       filename: "[name]_[hash:8].css", //设置输出的文件名
       chunkFilename: "[id].css",//  设置代码分割后的文件名
