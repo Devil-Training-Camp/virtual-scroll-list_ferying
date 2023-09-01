@@ -1,9 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
 import { getDataList } from './data';
-// import {VirtualScrollList} from '../src/index';
+import { VirtualScrollList } from '../src/index';
 // import {VirtualScrollList} from '../dist/index';
-import { VirtualScrollList } from 'virtual-scroll-list_ferying/dist';
+// import { VirtualScrollList } from 'virtual-scroll-list_ferying/dist';
 import './index.scss';
 
 function DemoPage() {
