@@ -9,8 +9,9 @@
   "scripts": {
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config conf/webpack.prod.config.js",
     "start": "webpack serve --config conf/webpack.dev.config.js --open",
+    "build": "npm run build:umd",
+    "build:umd": "webpack --config conf/webpack.prod.config.umd.js",
     "release": "release-it"
   },
   "repository": {
