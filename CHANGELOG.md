@@ -1,3 +1,5 @@
+## [1.1.2](https://github.com/Devil-Training-Camp/virtual-scroll-list_ferying/compare/1.1.0...1.1.2) (2023-10-10)
+
 # 1.1.0 (2023-10-09)
 
 ### Features
