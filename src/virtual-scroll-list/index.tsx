@@ -75,6 +75,7 @@ function VirtualList(props: virtualProps) {
   const getVisibleList = useCallback(() => {
     const start = getStartIndex();
     const end = getEndIndex();
+    // console.log('positionCache==>', positionCache)
     setVisibleList(positionCache.slice(start, end)); // 获取当前可视区上需要渲染的数据
 
     // 计算虚拟列表的位移
@@ -91,7 +92,16 @@ function VirtualList(props: virtualProps) {
     getVisibleList();
   }, [getVisibleList]);
 
+  function onScroll(e: any) {
+    const { scrollTop } = e.target;
+    if (scrollTop + screenHeight <= totalHeight) {
+      // 防止滚动条滚动超出最大高度时，页面不停闪动
+      setScrollTop(scrollTop);
+    }
+  }
+
   useEffect(() => {
+    // 获取可视区元素的实际高度，更新缓存列表
     const wrapperRef = virtualBodyRef.current;
     if (wrapperRef) {
       const nodes = wrapperRef.children;
@@ -106,28 +116,62 @@ function VirtualList(props: virtualProps) {
           needUpdateCache = true;
           positList[curIndex].height = offsetHeight; // 更新当前元素的实际高度
         }
+
+        nodeAddObserve(curIndex, offsetHeight);
       }
       if (needUpdateCache) {
         setPositionCache(positList);
       }
     }
-  }, [scrollTop, virtualBodyRef]);
+  }, [scrollTop]);
 
-  function onScroll(e: any) {
-    const { scrollTop } = e.target;
-    if (scrollTop + screenHeight <= totalHeight) {
-      // 防止滚动条滚动超出最大高度时，页面不停闪动
-      setScrollTop(scrollTop);
+  // 对当前元素添加监听
+  function nodeAddObserve(index: number, oldheight) {
+    let needUpdateCache = false; // 是否需要更新缓存
+    const positList: any[] = [...positionCache];
+    const node: any = document.querySelector('#row-' + index);
+
+    if (!node.myObserver) {
+      node.myObserver = new MutationObserver(function () {
+        const newheight = node.getBoundingClientRect().height;
+        // console.log('==>', newheight, oldheight);
+        if (newheight !== oldheight) {
+          needUpdateCache = true;
+          positList[index].height = newheight; // 更新当前元素的实际高度
+        }
+      });
+      node.myObserver.observe(node, {
+        // attributes: true, // 监听标签属性变化
+        subtree: true, // 监听后代节点变化
+        childList: true, // 监听子节点变化
+      });
+    }
+    if (needUpdateCache) {
+      setPositionCache(positList);
     }
   }
 
+  // 列表动态变化时，更新缓存
+  function onChangeItem(index, type) {
+    const list = [...positionCache];
+    if (type === 'open') {
+      list[index].showAll = true;
+    } else {
+      list[index].showAll = false;
+    }
+    setPositionCache(list);
+  }
+
   return (
-    <div className='screen' ref={wrapperRef} onScroll={onScroll} style={wrapperStyle}>
+    <div className='screen' id='virtua-scroll-wrapper' ref={wrapperRef} onScroll={onScroll} style={wrapperStyle}>
       <div className='inner-box' style={{ height: `${totalHeight}px` }}>
         <div className='virtulal-box' ref={virtualBodyRef} style={{ transform: `translateY(${offset}px)` }}>
           {visibleList.map((item: any) => (
             <div key={item.index} id={'row-' + item.index}>
-              {children(item)}
+              {children({
+                record: item,
+                onChangeItem,
+              })}
             </div>
           ))}
         </div>

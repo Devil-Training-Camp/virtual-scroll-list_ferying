@@ -20,20 +20,35 @@ function DemoPage() {
   return (
     <div className='wrapper'>
       <h1>虚拟滚动列表</h1>
-      <h2 style={{ marginTop: 20 }}>列表元素高度不固定的虚拟列表</h2>
+      <h2 style={{ marginTop: 20 }}>列表元素高度是动态的虚拟列表</h2>
       <VirtualScrollList
         wrapperStyle={{ width: '300px', height: '400px' }}
         estimatedItemHeight={40}
         dataList={dataList}
       >
-        {(record: any) => (
-          <div className='row-item'>
-            index_{record.index}
-            {record.content.map((item, i) => (
-              <div key={i}>{item}</div>
-            ))}
-          </div>
-        )}
+        {(props: any) => {
+          const { record, onChangeItem } = props;
+
+          return (
+            <div className='row-item'>
+              <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3>index_{record.index}</h3>
+                {record.content.length > 5 && (
+                  <>
+                    {record.showAll ? (
+                      <button onClick={() => onChangeItem(record.index, 'close')}>收起</button>
+                    ) : (
+                      <button onClick={() => onChangeItem(record.index, 'open')}>查看全部</button>
+                    )}
+                  </>
+                )}
+              </header>
+              {record.showAll
+                ? record.content.map((item: string, i: number) => <div key={i}>{item}</div>)
+                : record.content.slice(0, 5).map((item, i) => <div key={i}>{item}</div>)}
+            </div>
+          );
+        }}
       </VirtualScrollList>
     </div>
   );

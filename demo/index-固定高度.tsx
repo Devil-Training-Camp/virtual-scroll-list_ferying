@@ -1,7 +1,7 @@
-import { createRoot } from "react-dom/client";
-import { useState, useEffect } from "react";
-import "./index.scss";
-import { getDataList } from "./data";
+import { createRoot } from 'react-dom/client';
+import { useState, useEffect } from 'react';
+import './index.scss';
+import { getDataList } from './data';
 
 const itemHeight = 40; // 每个元素的高度
 const screenHeight = 400; // 可视区高度
@@ -28,32 +28,21 @@ function VirtualList() {
     const { scrollTop } = e.target;
     const start = Math.floor(scrollTop / itemHeight); // 当前可视区上第一个需要渲染元素的索引
     const end = start + screenCount + 1; // 当前可视区上最后一个需要渲染元素的索引
-  
+
     setCurList(dataList.slice(start, end));
     const offset = start * itemHeight; // 计算列表区域应移动的距离
     setOffset(offset);
   }
 
   return (
-    <div className="wrapper">
+    <div className='wrapper'>
       <h1>虚拟滚动列表</h1>
-      <div
-        className="screen"
-        onScroll={onScroll}
-        style={{ height: `${screenHeight}px` }}
-      >
-        <div className="inner-box" style={{ height: `${totalHeight}px` }}>
-          <div
-            className="show-box"
-            style={{ transform: `translateY(${offset}px)` }}
-          >
+      <div className='screen' onScroll={onScroll} style={{ height: `${screenHeight}px` }}>
+        <div className='inner-box' style={{ height: `${totalHeight}px` }}>
+          <div className='show-box' style={{ transform: `translateY(${offset}px)` }}>
             {curList.map((item) => {
               return (
-                <div
-                  className="row-item"
-                  key={item.id}
-                  style={{ height: `${itemHeight}px` }}
-                >
+                <div className='row-item' key={item.id} style={{ height: `${itemHeight}px` }}>
                   {item.name}
                 </div>
               );
@@ -65,5 +54,5 @@ function VirtualList() {
   );
 }
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById('root')!);
 root.render(<VirtualList />);
